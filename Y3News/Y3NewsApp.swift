@@ -9,12 +9,14 @@ import SwiftUI
 
 @main
 struct Y3NewsApp: App {
-    let persistenceController = PersistenceController.shared
+    //let persistenceController = PersistenceController.shared
+    @State private var model = MainVM()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(model)
+                //.environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

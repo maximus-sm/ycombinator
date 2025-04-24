@@ -7,23 +7,53 @@
 
 import SwiftUI
 
+
+enum Category:String,CaseIterable,Identifiable {
+    case new = "New"
+    case top = "Top"
+    case best = "Best"
+    
+    var id:Category {
+        self
+    }
+}
+
+
 struct ListView: View {
-    @State private var model = MainVM()
+    @Environment(MainVM.self) var model
+    @State private var category = Category.new
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(model.stories) { story in
-                    NavigationLink(story.title) {
-                        DetailView(url: story.url)
-                    }
-                }
+        ZStack {
+            NavigationView {
+                ListBody(type: .category(category))
+                    .toolbar {
+                        ToolbarItem {
+                            Menu {
+                                Picker("Category", selection: $category) {
+                                    ForEach(Category.allCases) { category in
+                                        Text(category.rawValue).tag(category)
+                                    }
+                                }.pickerStyle(.inline)
+                                    .onChange(of: category) {
+                                        model.getNews(by: category)
+                                    }
+                            } label: {
+                                Label("Category", systemImage:
+                                        "list.bullet")
+                            }
+                            
+                        }
+                    }.navigationTitle(category.rawValue)
             }
-        }.onAppear {
-            model.subscribe()
+            if(model.loading){
+                ProgressView()
+            }
         }
+        
     }
 }
 
 #Preview {
     ListView()
+        .environment(MainVM())
 }
