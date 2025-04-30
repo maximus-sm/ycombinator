@@ -18,14 +18,14 @@ class NetworkManager{
     //var a = Category()
     var maxStories = 20
     var page = 1
-    let total = 60 // constrained by Backend
+    //let total = 60 // constrained by Backend
     //var loadedIDs = [Int]()
     private let decoder = JSONDecoder()
     private let apiQueue = DispatchQueue(label: "API", qos: .default, attributes: .concurrent)
+    private let session:URLSession
     
-    init(){
-        //        NotificationCenter.default.addObserver(self, selector: #selector(pageDidChange(_:)), name: NetworkManager.pageChangedNotification, object: nil)
-        //        NotificationCenter.default.addObserver(forName: NetworkManager.pageChangedNotification, object: nil, queue: nil, using: pageDidChange(_:))
+    init(_ session: URLSession = .shared){
+        self.session = session
     }
     
     
@@ -33,9 +33,9 @@ class NetworkManager{
         
         static let baseURL = URL(string: "https://hacker-news.firebaseio.com/v0/")!
         
-//        case new
-//        case top
-//        case best
+        //        case new
+        //        case top
+        //        case best
         case category(Category)
         
         case story(Int)
@@ -43,12 +43,12 @@ class NetworkManager{
         
         var url: URL {
             switch self {
-//            case .new:
-//                return EndPoint.baseURL.appendingPathComponent("newstories.json")
-//            case .top:
-//                return EndPoint.baseURL.appendingPathComponent("topstories.json")
-//            case .best:
-//                return EndPoint.baseURL.appendingPathComponent("beststories.json")
+                //            case .new:
+                //                return EndPoint.baseURL.appendingPathComponent("newstories.json")
+                //            case .top:
+                //                return EndPoint.baseURL.appendingPathComponent("topstories.json")
+                //            case .best:
+                //                return EndPoint.baseURL.appendingPathComponent("beststories.json")
             case .story(let id):
                 return EndPoint.baseURL.appendingPathComponent("item/\(id).json")
             case .category(let cat):
@@ -81,10 +81,11 @@ class NetworkManager{
     
     
     func getNews(sortBy:EndPoint = .category(.new)) -> AnyPublisher<[Story], Error>{
-        URLSession.shared.dataTaskPublisher(for: sortBy.url)
+        session.dataTaskPublisher(for: sortBy.url)
             .map { $0.0 }
             .decode(type: [Int].self, decoder: decoder)
             .mapError { error -> Error in
+                print("Get News Error: \(error)")
                 switch error {
                 case is URLError:
                     return Error.addressUnreachable(sortBy.url)
@@ -106,10 +107,11 @@ class NetworkManager{
     
     
     func getNewsID(sortBy:EndPoint = .category(.new)) -> AnyPublisher<[Int], Error>{
-        URLSession.shared.dataTaskPublisher(for: sortBy.url)
+        session.dataTaskPublisher(for: sortBy.url)
             .map { $0.0 }
             .decode(type: [Int].self, decoder: decoder)
             .mapError { error -> Error in
+                print("GetnewsID Error \(error)")
                 switch error {
                 case is URLError:
                     return Error.addressUnreachable(sortBy.url)
@@ -153,11 +155,17 @@ class NetworkManager{
     
     
     func story(id: Int) -> AnyPublisher<Story, Error> {
-        URLSession.shared.dataTaskPublisher(for: EndPoint.story(id).url)
+        session.dataTaskPublisher(for: EndPoint.story(id).url)
             .receive(on: apiQueue)
-            .map { $0.0 }
+            .map {
+                //print("story \($0)")
+                return $0.0
+            }
             .decode(type: Story.self, decoder: decoder)
-            .catch { _ in Empty() }
+            .catch { _ in
+                //print("Error decoding story")
+                return Empty<Story, Error>()
+            }
             .eraseToAnyPublisher()
     }
 }

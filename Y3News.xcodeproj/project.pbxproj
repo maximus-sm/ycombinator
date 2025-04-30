@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		578FE5FE2DBB107500547BEC /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = 578FE5FD2DBB107500547BEC /* OHHTTPStubs */; };
+		578FE6002DBB107500547BEC /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 578FE5FF2DBB107500547BEC /* OHHTTPStubsSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		5725A3A02D6BC34300C0F554 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -59,6 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				578FE5FE2DBB107500547BEC /* OHHTTPStubs in Frameworks */,
+				578FE6002DBB107500547BEC /* OHHTTPStubsSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +142,8 @@
 			);
 			name = Y3NewsTests;
 			packageProductDependencies = (
+				578FE5FD2DBB107500547BEC /* OHHTTPStubs */,
+				578FE5FF2DBB107500547BEC /* OHHTTPStubsSwift */,
 			);
 			productName = Y3NewsTests;
 			productReference = 5725A39F2D6BC34300C0F554 /* Y3NewsTests.xctest */;
@@ -195,6 +204,9 @@
 			);
 			mainGroup = 5725A3812D6BC34200C0F554;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				578FE5FC2DBB107500547BEC /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5725A38B2D6BC34200C0F554 /* Products */;
 			projectDirPath = "";
@@ -558,6 +570,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		578FE5FC2DBB107500547BEC /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		578FE5FD2DBB107500547BEC /* OHHTTPStubs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 578FE5FC2DBB107500547BEC /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubs;
+		};
+		578FE5FF2DBB107500547BEC /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 578FE5FC2DBB107500547BEC /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5725A3822D6BC34200C0F554 /* Project object */;
 }

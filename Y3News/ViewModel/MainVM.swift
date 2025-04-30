@@ -157,7 +157,7 @@ extension MainVM {
     
     
     func removeFromFavs(by id:Int){
-        guard favsIDs.contains(id) else { return }
+        //guard favsIDs.contains(id) else { return }
         let request = FeaturedStory.fetchRequest()
         let predicate = NSPredicate(format: "id == %ld ", Int64(id))
         request.predicate = predicate
